@@ -27,9 +27,17 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    const userCollection = client.db("fitnessDb").collection("users");
     const reviewsCollection = client.db("fitnessDb").collection("reviews");
     const trainerCollection = client.db("fitnessDb").collection("trainer");
     const newsLatterCollection = client.db("fitnessDb").collection("newsLatter");
+
+    // user related api
+    app.post('/users',async(req,res)=>{
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    })
 
     // trainer releted apis
     app.get('/trainer',async(req,res)=>{
@@ -43,6 +51,11 @@ async function run() {
         const result = await trainerCollection.findOne(query);
         res.send(result);
     });
+    app.post('/trainer',async(req,res)=>{
+        const trainerInfo = req.body;
+        const result = await trainerCollection.insertOne(trainerInfo);
+        res.send(result);
+    })
     // reviews releted api
     app.get('/reviews',async(req,res) => {
         const result = await reviewsCollection.find().toArray();

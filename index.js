@@ -31,6 +31,7 @@ async function run() {
     const reviewsCollection = client.db("fitnessDb").collection("reviews");
     const trainerCollection = client.db("fitnessDb").collection("trainer");
     const newsLatterCollection = client.db("fitnessDb").collection("newsLatter");
+    const entryClassCollection = client.db("fitnessDb").collection("entryClass");
 
     // user related api
     app.post('/users',async(req,res)=>{
@@ -42,6 +43,13 @@ async function run() {
       }
       const result = await userCollection.insertOne(user);
       res.send(result);
+    })
+
+    // entry class related api
+    app.post('/entryclass',async(req,res)=>{
+        const entryClassInfo = req.body;
+        const result = await entryClassCollection.insertOne(entryClassInfo);
+        res.send(result);
     })
 
     // trainer releted apis

@@ -46,6 +46,16 @@ async function run() {
     })
 
     // entry class related api
+    app.get('/entryclass',async(req,res)=>{
+        const result = await entryClassCollection.find().toArray();
+        res.send(result);
+    })
+    app.get('/entryclass/:id',async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await entryClassCollection.findOne(query);
+      res.send(result);
+    })
     app.post('/entryclass',async(req,res)=>{
         const entryClassInfo = req.body;
         const result = await entryClassCollection.insertOne(entryClassInfo);
@@ -60,7 +70,6 @@ async function run() {
     app.get('/trainer/:id', async (req, res) => {
         const id = req.params.id;
         const query = {_id: new ObjectId(id)}
-        console.log(query)
         const result = await trainerCollection.findOne(query);
         res.send(result);
     });

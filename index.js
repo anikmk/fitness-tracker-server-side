@@ -35,6 +35,11 @@ async function run() {
     // user related api
     app.post('/users',async(req,res)=>{
       const user = req.body;
+      const query = {email: user.email};
+      const axistingUser = await userCollection.findOne(query);
+      if(axistingUser){
+        return res.send({message:'user already axist',insertedId:null})
+      }
       const result = await userCollection.insertOne(user);
       res.send(result);
     })
@@ -62,6 +67,10 @@ async function run() {
         res.send(result);
     })
     // news latter related api
+    app.get('/newslatter',async(req,res)=>{
+      const result = await newsLatterCollection.find().toArray();
+      res.send(result);
+    })
     app.post('/newslatter',async(req,res)=>{
         const NewsLatterInfo = req.body;
         const result = await newsLatterCollection.insertOne(NewsLatterInfo);

@@ -32,6 +32,7 @@ async function run() {
     const trainerCollection = client.db("fitnessDb").collection("trainer");
     const newsLatterCollection = client.db("fitnessDb").collection("newsLatter");
     const entryClassCollection = client.db("fitnessDb").collection("entryClass");
+    const entryForumCollection = client.db("fitnessDb").collection("entryForum");
 
     // user related api
     app.post('/users',async(req,res)=>{
@@ -60,6 +61,12 @@ async function run() {
         const entryClassInfo = req.body;
         const result = await entryClassCollection.insertOne(entryClassInfo);
         res.send(result);
+    })
+    // entry forum related api
+    app.post('/entryforum',async(req,res)=>{
+      const entryForumInfo = req.body;
+      const result = await entryForumCollection.insertOne(entryForumInfo);
+      res.send(result);
     })
 
     // trainer releted apis

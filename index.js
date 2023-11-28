@@ -137,10 +137,23 @@ async function run() {
         const result = await trainerCollection.findOne(query);
         res.send(result);
     });
+
     app.get('/trainers/pending', async (req, res) => {
-      const pendingTrainers = await trainerCollection.find({ status: 'panding' }).toArray();
+      const pendingTrainers = await trainerCollection.find({ status:'pending' }).toArray();
       res.send(pendingTrainers);
   });
+  app.put('/trainers/pending/:id', async (req, res) => {
+    const item = req.body;
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const option = { upsert: true };
+      const updatedDoc = {
+        $set:{
+          status:item.status,
+        }}
+        const result = await trainerCollection.updateOne( filter, updatedDoc,option);
+        res.send(result);
+      });
 
     app.post('/trainer',async(req,res)=>{
         const trainerInfo = req.body;

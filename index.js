@@ -26,7 +26,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const userCollection = client.db("fitnessDb").collection("users");
     const reviewsCollection = client.db("fitnessDb").collection("reviews");
     const trainerCollection = client.db("fitnessDb").collection("trainer");
@@ -79,8 +79,8 @@ async function run() {
         res.status(200).send({ email: userEmail, isAdmin, isCoach });
       } catch (error) {
         console.error(error);
-        res.status(500).send({ error: "Internal Server Error" });
-      }
+        res.status(500).send({ error: "Internal Server Error"});
+    }
     });
 
     // entry class related api
@@ -137,6 +137,11 @@ async function run() {
         const result = await trainerCollection.findOne(query);
         res.send(result);
     });
+    app.get('/trainers/pending', async (req, res) => {
+      const pendingTrainers = await trainerCollection.find({ status: 'panding' }).toArray();
+      res.send(pendingTrainers);
+  });
+
     app.post('/trainer',async(req,res)=>{
         const trainerInfo = req.body;
         const result = await trainerCollection.insertOne(trainerInfo);

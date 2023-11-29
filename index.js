@@ -144,6 +144,10 @@ async function run() {
   });
   app.put('/trainers/pending/:id', async (req, res) => {
     const item = req.body;
+    console.log(item)
+    // upate user status
+      const userUpdate = await userCollection.updateOne({email:item.email},{$set:{role:'trainer'}}) 
+      console.log(userUpdate)
       const id = req.params.id;
       const filter = {_id: new ObjectId(id)};
       const option = { upsert: true };
@@ -156,7 +160,9 @@ async function run() {
       });
 
     app.post('/trainer',async(req,res)=>{
+
         const trainerInfo = req.body;
+        // console.log(tra)
         const result = await trainerCollection.insertOne(trainerInfo);
         res.send(result);
     })
